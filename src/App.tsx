@@ -1,7 +1,11 @@
 import React from "react";
 import { css, Global } from "@emotion/react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import Home from "./routes/Home";
+import Login from "./routes/Login";
+import SignUp from "./routes/SignUp";
+import Todo from "./routes/Todo";
 
 const globalStype = css`
   body {
@@ -18,6 +22,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<Login />} />
+          <Route path="/todo" element={<Todo />} />
         </Routes>
       </Router>
     </>
