@@ -1,22 +1,11 @@
-function Email({
-  setEmail,
-}: {
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-}) {
-  const getEmailInputValue = (e: React.FocusEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setEmail(() => inputValue);
-  };
+import Input from '../Input/Input';
+import Label from '../Label/Label';
 
+function Email({ ...props }) {
   return (
     <>
-      <label htmlFor="email">이메일</label>
-      <input
-        type="email"
-        data-testid="email-input"
-        id="email"
-        onBlur={getEmailInputValue}
-      />
+      <Label htmlFor='email'>이메일</Label>
+      <Input type='email' id='email' {...props} />
     </>
   );
 }

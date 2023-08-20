@@ -1,30 +1,13 @@
-function Password({
-  setPassword,
-  enter,
-}: {
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-  enter: () => void;
-}) {
-  const getPasswordInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setPassword(() => inputValue);
-  };
+import Form from '../Form/Form';
+import Input from '../Input/Input';
+import Label from '../Label/Label';
 
-  const onEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") enter();
-  };
-
+function Password({ ...props }) {
   return (
-    <>
-      <label htmlFor="password">비밀번호</label>
-      <input
-        type="password"
-        data-testid="password-input"
-        id="password"
-        onChange={getPasswordInputValue}
-        onKeyUp={onEnter}
-      />
-    </>
+    <Form>
+      <Label htmlFor='password'>비밀번호</Label>
+      <Input type='password' id='password' {...props} />
+    </Form>
   );
 }
 
