@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import TodoList from "../components/Todo/TodoList";
+import axios from 'axios';
+import { css } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+
+import TodoList from '../components/Todo/TodoList';
 
 const todoStyle = css`
   width: 100vw;
@@ -51,7 +52,7 @@ export interface Todos {
 function Todo() {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [todo, setTodo] = useState<string>("");
+  const [todo, setTodo] = useState<string>('');
   const [todos, setTodos] = useState<Todos[]>([]);
 
   const todoValue = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -61,47 +62,47 @@ function Todo() {
 
   const addTodo = () => {
     return axios({
-      method: "post",
+      method: 'post',
       url: `https://www.pre-onboarding-selection-task.shop/todos`,
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       data: {
         todo,
       },
     }).then(() => {
       if (inputRef.current) {
-        inputRef.current.value = "";
+        inputRef.current.value = '';
       }
       axios({
-        method: "get",
+        method: 'get',
         url: `https://www.pre-onboarding-selection-task.shop/todos`,
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       }).then((res) => setTodos(res.data));
     });
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/signin");
+    if (!localStorage.getItem('token')) {
+      navigate('/signin');
     }
     axios({
-      method: "get",
+      method: 'get',
       url: `https://www.pre-onboarding-selection-task.shop/todos`,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     }).then((res) => setTodos(res.data));
   }, []);
 
   return (
     <div css={todoStyle}>
-      <div className="form">
-        <input data-testid="new-todo-input" ref={inputRef} onBlur={todoValue} />
-        <button data-testid="new-todo-add-button" onClick={addTodo}>
+      <div className='form'>
+        <input data-testid='new-todo-input' ref={inputRef} onBlur={todoValue} />
+        <button data-testid='new-todo-add-button' onClick={addTodo}>
           추가
         </button>
       </div>

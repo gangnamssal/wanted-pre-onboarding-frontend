@@ -6,7 +6,7 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Todo from './pages/Todo';
 
-const globalStype = css`
+const globalStyle = css`
   body {
     margin: 0;
     padding: 0;
@@ -17,7 +17,7 @@ const globalStype = css`
 function App() {
   return (
     <>
-      <Global styles={globalStype} />
+      <Global styles={globalStyle} />
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />

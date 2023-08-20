@@ -1,6 +1,17 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
-import { useNavigate } from "react-router-dom";
+import { css } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
+
+function Home() {
+  const navigate = useNavigate();
+
+  return (
+    <div css={HomeStyle}>
+      <button onClick={() => navigate('/signin')}>로그인</button>
+      <button onClick={() => navigate('/signup')}>회원가입</button>
+    </div>
+  );
+}
 
 const HomeStyle = css`
   display: flex;
@@ -22,16 +33,5 @@ const HomeStyle = css`
     margin-right: 5%;
   }
 `;
-
-function Home() {
-  const navigate = useNavigate();
-
-  return (
-    <div css={HomeStyle}>
-      <button onClick={() => navigate("/signin")}>로그인</button>
-      <button onClick={() => navigate("/signup")}>회원가입</button>
-    </div>
-  );
-}
 
 export default Home;

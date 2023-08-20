@@ -1,31 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { signUpStyle } from './SignUp';
+import useInput from '../hooks/useInput';
 import View from '../components/View/View';
 import { loginApi } from '../apis/loginApi';
+import signStyle from '../styles/signStyle';
 import Title from '../components/Title/Title';
 import Email from '../components/Email/Email';
 import Button from '../components/Button/Button';
 import Password from '../components/Password/Password';
-import BackButton from '../components/Button/BackButton';
+import BackButton from '../components/BackButton/BackButton';
 
 function Login() {
   const navigate = useNavigate();
   const isValid = useRef<boolean>(false);
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-
-  const getEmailInputValue = (e: React.FocusEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setEmail(() => inputValue);
-  };
-
-  const getPasswordInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setPassword(() => inputValue);
-  };
+  const [email, getEmailInput] = useInput();
+  const [password, getPasswordInput] = useInput();
 
   const handleSign = async () => {
     if (isValid.current) {
@@ -42,14 +33,14 @@ function Login() {
   }, [email, password, navigate]);
 
   return (
-    <View css={signUpStyle(isValid.current)}>
+    <View css={signStyle.view}>
       <Title as={'h1'}>로그인</Title>
-      <Email onBlur={getEmailInputValue} />
-      <Password onChange={getPasswordInputValue} onSubmit={handleSign} />
-      <Button onClick={handleSign} disabled={!isValid}>
+      <Email onBlur={getEmailInput} />
+      <Password onChange={getPasswordInput} onSubmit={handleSign} />
+      <Button onClick={handleSign} disabled={!isValid.current} css={signStyle.button(isValid.current)}>
         로그인
       </Button>
-      <BackButton />
+      <BackButton css={signStyle.backButton} />
     </View>
   );
 }
