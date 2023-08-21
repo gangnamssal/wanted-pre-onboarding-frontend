@@ -6,43 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import TodoList from '../components/Todo/TodoList';
 
-const todoStyle = css`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .form {
-    display: flex;
-
-    input {
-      width: 15vw;
-      height: 5vh;
-      border-radius: 16px;
-    }
-
-    button {
-      width: 5vw;
-      height: 5vh;
-      border: 0;
-      border-radius: 16px;
-      background-color: tomato;
-      color: white;
-      margin-left: 1%;
-    }
-  }
-
-  li {
-    display: flex;
-    label {
-      font-size: 1.5rem;
-    }
-  }
-`;
-
-export interface Todos {
+export interface ITodos {
   id: number;
   todo: string;
   isCompleted: boolean;
@@ -53,7 +17,7 @@ function Todo() {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [todo, setTodo] = useState<string>('');
-  const [todos, setTodos] = useState<Todos[]>([]);
+  const [todos, setTodos] = useState<ITodos[]>([]);
 
   const todoValue = (e: React.FocusEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -115,5 +79,41 @@ function Todo() {
     </div>
   );
 }
+
+const todoStyle = css`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .form {
+    display: flex;
+
+    input {
+      width: 15vw;
+      height: 5vh;
+      border-radius: 16px;
+    }
+
+    button {
+      width: 5vw;
+      height: 5vh;
+      border: 0;
+      border-radius: 16px;
+      background-color: tomato;
+      color: white;
+      margin-left: 1%;
+    }
+  }
+
+  li {
+    display: flex;
+    label {
+      font-size: 1.5rem;
+    }
+  }
+`;
 
 export default Todo;

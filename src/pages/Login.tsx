@@ -18,7 +18,9 @@ function Login() {
   const [email, getEmailInput] = useInput();
   const [password, getPasswordInput] = useInput();
 
-  const handleSign = async () => {
+  const handleSign = async (e: React.KeyboardEvent<HTMLElement> | React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+
     if (isValid.current) {
       const res = await loginApi({ email, password });
       localStorage.setItem('token', res.data.access_token);
