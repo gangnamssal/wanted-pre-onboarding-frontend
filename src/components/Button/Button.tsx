@@ -1,7 +1,7 @@
 import View from '../View/View';
 
-function Button({ ...props }) {
-  return <View as='button' {...props} />;
+function Button({ as = 'button', ...props }) {
+  return <View as={as} {...props} />;
 }
 
 export default Button;
