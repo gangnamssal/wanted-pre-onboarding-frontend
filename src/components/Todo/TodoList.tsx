@@ -1,104 +1,62 @@
-import axios from "axios";
-import { useRef, useState } from "react";
-import { Todos } from "../../routes/Todo";
+import { useCallback, useState } from 'react';
 
-function TodoList({
-  todo,
-  setTodos,
-}: {
-  todo: Todos;
-  setTodos: React.Dispatch<React.SetStateAction<Todos[]>>;
-}) {
-  const [todoValue, setTodoValue] = useState<string>(todo.todo);
+import Li from '../Li/Li';
+import Span from '../Span/Span';
+import Label from '../Label/Label';
+import Input from '../Input/Input';
+import Button from '../Button/Button';
+import getTodo from '../../apis/getTodo';
+import { ITodos } from '../../types/todo';
+import useInput from '../../hooks/useInput';
+import modifyTodoApi from '../../apis/modifyTodoApi';
+import deleteTodoApi from '../../apis/deleteTodoApi';
+
+function TodoList({ todo, setTodos }: { todo: ITodos; setTodos: React.Dispatch<React.SetStateAction<ITodos[]>> }) {
   const [isModify, setIsModify] = useState<boolean>(false);
+  const [todoValue, setTodoValue] = useInput(todo.todo);
   const [isCompleted, setIsCompleted] = useState<boolean>(todo.isCompleted);
 
-  const deleteTodo = () => {
-    return axios({
-      method: "delete",
-      url: `https://www.pre-onboarding-selection-task.shop/todos/${todo.id}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }).then(() => {
-      axios({
-        method: "get",
-        url: `https://www.pre-onboarding-selection-task.shop/todos`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }).then((res) => setTodos(res.data));
-    });
-  };
+  const getTodosValue = useCallback(async () => {
+    const res = await getTodo();
+    setTodos(() => res.data);
+  }, []);
 
-  const handleModify = () => {
-    return axios({
-      method: "put",
-      url: `https://www.pre-onboarding-selection-task.shop/todos/${todo.id}`,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      data: {
-        todo: todoValue,
-        isCompleted,
-      },
-    }).then(
-      () => (
-        setIsModify(false),
-        axios({
-          method: "get",
-          url: `https://www.pre-onboarding-selection-task.shop/todos`,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }).then((res) => setTodos(res.data))
-      )
-    );
-  };
+  const deleteTodo = useCallback(async () => {
+    await deleteTodoApi(todo.id);
+    getTodosValue();
+  }, [todo]);
 
-  const completed = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsCompleted((isCompleted) => !isCompleted);
-  };
+  const handleModify = useCallback(async () => {
+    const modifyData = {
+      todo: todoValue,
+      isCompleted,
+    };
+    await modifyTodoApi(todo.id, modifyData);
+    setIsModify(false);
+    getTodosValue();
+  }, [todo, isCompleted]);
+
+  const completed = () => setIsCompleted((isCompleted) => !isCompleted);
 
   return (
-    <li>
-      <label>
-        <input type="checkbox" onChange={completed} checked={isCompleted} />
-        {isModify ? (
-          <input
-            data-testid="modify-input"
-            value={todoValue}
-            onChange={(e) => setTodoValue(e.target.value)}
-          />
-        ) : (
-          <span>{todo.todo}</span>
-        )}
-      </label>
+    <Li>
+      <Label>
+        <Input type='checkbox' onChange={completed} checked={isCompleted} />
+        {isModify ? <Input value={todoValue} onChange={setTodoValue} /> : <Span>{todo.todo}</Span>}
+      </Label>
 
       {!isModify ? (
         <>
-          <button data-testid="modify-button" onClick={() => setIsModify(true)}>
-            수정
-          </button>
-          <button data-testid="delete-button" onClick={deleteTodo}>
-            삭제
-          </button>
+          <Button onClick={() => setIsModify(true)}>수정</Button>
+          <Button onClick={deleteTodo}>삭제</Button>
         </>
       ) : (
         <>
-          <button data-testid="submit-button" onClick={handleModify}>
-            제출
-          </button>
-          <button
-            data-testid="cancel-button"
-            onClick={() => setIsModify(false)}
-          >
-            취소
-          </button>
+          <Button onClick={handleModify}>제출</Button>
+          <Button onClick={() => setIsModify(false)}>취소</Button>
         </>
       )}
-    </li>
+    </Li>
   );
 }
 
