@@ -1,5 +1,5 @@
 import View from '../View/View';
 
 export default function Li({ as = 'li', ...props }) {
-  return <View as={as} {...props} />;
+  return <View as={as as React.ElementType} {...props} />;
 }
