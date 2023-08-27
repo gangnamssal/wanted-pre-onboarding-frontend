@@ -2,14 +2,17 @@
 import { css } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 
+import View from '../components/View/View';
+import Button from '../components/Button/Button';
+
 function Home() {
   const navigate = useNavigate();
 
   return (
-    <div css={HomeStyle}>
-      <button onClick={() => navigate('/signin')}>로그인</button>
-      <button onClick={() => navigate('/signup')}>회원가입</button>
-    </div>
+    <View css={HomeStyle}>
+      <Button onClick={() => navigate('/signin')}>로그인</Button>
+      <Button onClick={() => navigate('/signup')}>회원가입</Button>
+    </View>
   );
 }
 
